@@ -4,18 +4,18 @@ use std::fmt;
 #[derive(Debug)]
 pub struct QValue {
     pub action_idx: usize,
-    pub value: f32,
+    pub value: f64,
 }
 
 #[derive(Debug)]
 pub struct QTable {
     states_count: usize,
     actions_count: usize,
-    table: Vec<f32>, // плоский массив лучше подходит для использования Cache L1, L2, L3
+    table: Vec<f64>, // плоский массив лучше подходит для использования CPU Cache L1, L2, L3
 }
 
 impl QTable {
-    pub fn new(states_count: usize, actions_count: usize, initial_value: f32) -> Self {
+    pub fn new(states_count: usize, actions_count: usize, initial_value: f64) -> Self {
         Self {
             states_count,
             actions_count,
@@ -23,8 +23,9 @@ impl QTable {
         }
     }
 
-    // поиск лучшего действия
-    pub fn get_best_action_index(&self, state: usize) -> QValue {
+    /// Поиск лучшего действия
+    /// Возвращает индекс действия и его expected total cumulative reward
+    pub fn get_best_action(&self, state: usize) -> QValue {
         let start = state * self.actions_count;
         let end = start + self.actions_count;
         let state_slice = &self.table[start..end];
@@ -45,7 +46,7 @@ impl QTable {
 impl Index<usize> for QTable {
     // Возвращаемым типом будет срез (slice) f32.
     // Его размер в памяти в точности равен количеству действий.
-    type Output = [f32];
+    type Output = [f64];
 
     fn index(&self, state: usize) -> &Self::Output {
         debug_assert!(state < self.states_count);
@@ -79,7 +80,7 @@ impl fmt::Display for QTable {
 
         for state in 0..self.states_count {
             let row = &self[state];
-            let best = self.get_best_action_index(state);
+            let best = self.get_best_action(state);
 
             write!(f, "S-{:<6} │ ", state)?;
             for (idx, val) in row.iter().enumerate() {
