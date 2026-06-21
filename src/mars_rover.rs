@@ -16,11 +16,13 @@
 //!
 
 mod mars_env;
-mod mars_q_table_agent;
 mod mars_action;
 mod q_table;
+mod mars_q_table_strategy;
+mod mars_agent;
 
 pub use super::mars_rover::mars_action::Direction;
 pub use super::mars_rover::mars_env::MarsState;
 pub use super::mars_rover::mars_env::MarsEnv;
-pub use super::mars_rover::mars_q_table_agent::MarsQAgent;
+pub use super::mars_rover::mars_agent::MarsAgent;
+pub use super::mars_rover::mars_q_table_strategy::MaraQTableStrategy;

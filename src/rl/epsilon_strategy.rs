@@ -1,6 +1,6 @@
 /// Exploration - Exploitation
 
-pub trait ExplorationStrategy {
+pub trait EpsilonStrategy {
     /// Возращает epsilon: 1 - Exploration, 0 - Exploitation
     fn get_epsilon(&self, current_epoch: i64) -> f64;
 }
@@ -11,7 +11,7 @@ pub struct LinearEpsilonStrategy {
     pub total_epochs: i64,
 }
 
-impl ExplorationStrategy for LinearEpsilonStrategy {
+impl EpsilonStrategy for LinearEpsilonStrategy {
     fn get_epsilon(&self, current_epoch: i64) -> f64 {
         if current_epoch < 0 {
             return 0.0;
@@ -30,7 +30,7 @@ pub struct ExponentialEpsilonStrategy {
     pub decay_rate: f64,
 }
 
-impl ExplorationStrategy for ExponentialEpsilonStrategy {
+impl EpsilonStrategy for ExponentialEpsilonStrategy {
     fn get_epsilon(&self, current_epoch: i64) -> f64 {
         if current_epoch < 0 {
             return 0.0;

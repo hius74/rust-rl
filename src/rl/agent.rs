@@ -1,6 +1,9 @@
+use crate::mars_rover::{Direction, MarsState};
+
 pub trait Agent {
     type State;
     type Action;
+    fn choose_action(&mut self, state: &MarsState) -> Direction;
 
     /// Начало новой эпохи обучения.
     /// epoch >=0 обучение, < 0 финальный прогон
